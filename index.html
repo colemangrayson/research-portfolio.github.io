@@ -254,43 +254,35 @@
       text-decoration: none;
       transition: all 0.3s ease;
       position: relative;
-      overflow: hidden;            /* keeps corners clean */
+      overflow: hidden;
       display: inline-block;
       background: rgba(255, 255, 255, 0.02);
       color: var(--text-secondary);
       backdrop-filter: blur(5px);
       cursor: not-allowed;
       opacity: 0.7;
-      z-index: 0;                  /* create a stacking context */
+      isolation: isolate; /* keeps pseudo-element layering tidy */
     }
     
     .btn-coming-soon::before {
       content: "";
       position: absolute;
-      inset: 0;                    /* cover the whole button */
-      border-radius: inherit;      /* match rounded corners */
-      z-index: -1;                 /* sit behind the text */
-      pointer-events: none;
-    
-      /* Optional base tint so there's no fully transparent area */
-      background:
-        linear-gradient(rgba(255,255,255,0.03), rgba(255,255,255,0.03)),
-        repeating-linear-gradient(
-          45deg,
-          rgba(255,255,255,0.00) 0px,
-          rgba(255,255,255,0.00) 10px,
-          rgba(255,255,255,0.06) 10px,
-          rgba(255,255,255,0.06) 20px
-        );
-    
-      /* Animate stripes without exposing edges */
-      background-size: auto, 20px 20px;
+      inset: 0;                 /* cover the whole button */
+      pointer-events: none;     /* don't block hover effects */
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(255, 255, 255, 0.05) 10px,
+        rgba(255, 255, 255, 0.05) 20px
+      );
+      background-size: 20px 20px; /* one full stripe cycle */
       animation: comingSoonStripes 2s linear infinite;
     }
     
     @keyframes comingSoonStripes {
-      from { background-position: 0 0, 0 0; }
-      to   { background-position: 0 0, 20px 0; }
+      from { background-position: 0 0; }
+      to   { background-position: 20px 20px; } /* shift 1 cycle diagonally */
     }
     
     .btn-coming-soon:hover {
